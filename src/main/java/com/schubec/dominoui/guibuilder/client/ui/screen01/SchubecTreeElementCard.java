@@ -4,20 +4,23 @@ import java.util.List;
 
 import org.dominokit.domino.ui.cards.Card;
 
+import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
 import com.schubec.dominoui.guibuilder.client.model.UUID;
 
 import elemental2.dom.HTMLDivElement;
 
 public class SchubecTreeElementCard extends SchubecTreeElement {
 
-	private SchubecTreeElementCardHeader header;
-	private SchubecTreeElementCardBody body;
+
 	
 	public SchubecTreeElementCard(Card element, String name) {
 		super(element, name);
 	}
 	public SchubecTreeElementCard(Card element) {
-		super(element, "card_"+UUID.get());
+		super(element, "card_"+ElementCounter.get());
+	}
+	public String getType() {
+		return "Card";
 	}
 	@Override
 	public String getLabel() {
@@ -41,23 +44,7 @@ public class SchubecTreeElementCard extends SchubecTreeElement {
 	public String toSourcecode() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Card "+getName()+" = Card.create(\""+getLabel()+"\");\n");
-		List<HTMLDivElement> children = new LinkedList<>();
-		children.forEach(child -> sb.append(getName()+".appendChild();\n"));
-		
-		sb.append(getName()+".getHeader().appendChild();\n");
 		return sb.toString();
-	}
-	public SchubecTreeElementCardHeader getHeader() {
-		return header;
-	}
-	public void setHeader(SchubecTreeElementCardHeader header) {
-		this.header = header;
-	}
-	public SchubecTreeElementCardBody getBody() {
-		return body;
-	}
-	public void setBody(SchubecTreeElementCardBody body) {
-		this.body = body;
 	}
 	
 	

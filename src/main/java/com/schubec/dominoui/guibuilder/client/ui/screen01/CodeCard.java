@@ -12,11 +12,6 @@ import org.gwtproject.safehtml.shared.SafeHtmlBuilder;
 import org.jboss.gwt.elemento.core.Elements;
 import org.jboss.gwt.elemento.core.InputType;
 
-import com.google.gwt.resources.client.ExternalTextResource;
-import com.google.gwt.resources.client.ResourceCallback;
-import com.google.gwt.resources.client.ResourceException;
-import com.google.gwt.resources.client.TextResource;
-
 import elemental2.dom.ClipboardEvent;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.EventListener;
@@ -36,8 +31,9 @@ public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
             .hide()
             .appendChild(codeBlock);
 
-    public CodeCard() {
+    public CodeCard(String title) {
         copyInput.value = code;
+        card.setTitle(title);
         card.addHeaderAction(Icons.ALL.content_copy()
                 .setTooltip("Copy code"), evt -> {
             copyInput.select();
@@ -57,12 +53,10 @@ public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
         init(this);
     }
 
-    public static CodeCard createCodeCard(String code) {
-        return createCodeCard(code, null);
-    }
 
-    public static CodeCard createCodeCard(String code, String lang) {
-        CodeCard codeCard = new CodeCard();
+
+    public static CodeCard createCodeCard(String title, String code, String lang) {
+        CodeCard codeCard = new CodeCard(title);
         DominoElement.of(codeCard.codeBlock)
                 .clearElement()
                 .setInnerHtml(PR.prettyPrintOne(code, lang, false));
@@ -70,27 +64,7 @@ public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
         return codeCard;
     }
 
-    public static CodeCard createCodeCard(ExternalTextResource codeResource) {
-        CodeCard codeCard = new CodeCard();
-        try {
-            codeResource.getText(new ResourceCallback<TextResource>() {
-                @Override
-                public void onError(ResourceException e) {
-                    DomGlobal.console.error("could not load code from external resource", e);
-                }
-
-                @Override
-                public void onSuccess(TextResource resource) {
-                    DominoElement.of(codeCard.codeBlock).setInnerHtml(PR.prettyPrintOne(resource.getText(), null, false));
-                    codeCard.code = resource.getText();
-                }
-            });
-        } catch (ResourceException e) {
-            DomGlobal.console.error("could not load code from external resource", e);
-        }
-
-        return codeCard;
-    }
+    
 
     public CodeCard setCode(String code) {
         DominoElement.of(this.codeBlock).setInnerHtml(PR.prettyPrintOne(code, null, false));

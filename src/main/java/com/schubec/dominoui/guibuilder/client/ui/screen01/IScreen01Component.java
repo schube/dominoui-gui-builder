@@ -1,7 +1,6 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01;
 
 import com.github.nalukit.nalu.client.component.IsComponent;
-import com.schubec.dominoui.guibuilder.client.model.MyModel;
 import elemental2.dom.HTMLElement;
 
 /**

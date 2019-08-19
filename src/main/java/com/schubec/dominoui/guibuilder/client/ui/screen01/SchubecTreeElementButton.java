@@ -1,14 +1,17 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01;
 import org.dominokit.domino.ui.button.Button;
 
+import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
 import com.schubec.dominoui.guibuilder.client.model.UUID;
 
 public class SchubecTreeElementButton extends SchubecTreeElement {
 
 	public SchubecTreeElementButton(Button element) {
-		super(element, "button_"+ UUID.get());
+		super(element, "button_"+ ElementCounter.get());
 	}
-
+	public String getType() {
+		return "Button";
+	}
 	@Override
 	public String getLabel() {
 		return ((Button)getElement()).getTextContent();

@@ -1,7 +1,7 @@
 .highlightElement {
-	border: 1px dashed red;
+	border: 1px dashed red !important;
 }
 
 .elementSelected {
-	border: 2px solid red;
+	border: 2px solid red !important;
 }

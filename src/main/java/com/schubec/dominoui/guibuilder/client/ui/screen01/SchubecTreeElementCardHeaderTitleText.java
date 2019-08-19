@@ -4,21 +4,22 @@ import org.dominokit.domino.ui.cards.Card;
 import org.dominokit.domino.ui.utils.DominoElement;
 
 import elemental2.dom.HTMLDivElement;
+import elemental2.dom.HTMLHeadingElement;
 
-public class SchubecTreeElementCardHeader extends SchubecTreeElement {
+public class SchubecTreeElementCardHeaderTitleText extends SchubecTreeElement {
 
-	public SchubecTreeElementCardHeader(DominoElement<HTMLDivElement> element) {
-		super(element, "div");
+	public SchubecTreeElementCardHeaderTitleText(DominoElement<HTMLHeadingElement> dominoElement) {
+		super(dominoElement, "div");
 		setRemoveable(false);
 		setHasSourcecode(false);
 	}
 	public String getType() {
-		return "CardHeader";
+		return "CardHeaderTitle";
 	}
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Cardheader with ID " + element.getDominoId() + "\n");
+		sb.append("CardHeaderTitle with ID " + element.getDominoId() + "\n");
 		return sb.toString();
 	}
 

@@ -3,9 +3,8 @@ package com.schubec.dominoui.guibuilder.client.ui.navigation;
 import com.github.nalukit.nalu.client.component.AbstractComponentController;
 import com.github.nalukit.nalu.client.component.annotation.Controller;
 import com.schubec.dominoui.guibuilder.client.GuiBuilderContext;
+
 import elemental2.dom.HTMLElement;
-import java.lang.Override;
-import java.lang.String;
 
 /**
  * Copyright (C) 2018 - 2019 Frank Hossfeld <frank.hossfeld@googlemail.com>
@@ -34,10 +33,6 @@ public class NavigationController extends AbstractComponentController<GuiBuilder
 
   @Override
   public void doNavigateTo(String target) {
-    switch (target) {
-      case "screen01":
-      router.route("/application/screen01");
-      break;
-    }
+      router.route("/application/"+ target);
   }
 }

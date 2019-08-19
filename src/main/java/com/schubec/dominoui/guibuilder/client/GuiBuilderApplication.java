@@ -22,9 +22,9 @@ import com.github.nalukit.nalu.plugin.elemental2.client.DefaultElemental2Logger;
  */
 @Application(
     context = GuiBuilderContext.class,
-    startRoute = "/application/screen01",
+    startRoute = "/application/guibuilder",
     loader = GuiBuilderLoader.class,
-    routeError = "/application/screen01"
+    routeError = "/application/guibuilder"
 )
 @Debug(
     logger = DefaultElemental2Logger.class,

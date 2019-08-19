@@ -1,19 +1,22 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01;
 import org.dominokit.domino.ui.chips.Chip;
 
+import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
 import com.schubec.dominoui.guibuilder.client.model.UUID;
 
 public class SchubecTreeElementChip extends SchubecTreeElement {
 
 	public SchubecTreeElementChip(Chip element) {
-		super(element, "chip_"+ UUID.get());
+		super(element, "chip_"+ ElementCounter.get());
 	}
 
 	@Override
 	public String getLabel() {
 		return ((Chip)getElement()).getValue();
 	}
-
+	public String getType() {
+		return "Chip";
+	}
 	@Override
 	public void setLabel(String label) {
 		((Chip)getElement()).setValue(label);

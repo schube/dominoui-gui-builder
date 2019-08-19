@@ -3,10 +3,8 @@ package com.schubec.dominoui.guibuilder.client.ui.screen01;
 import com.github.nalukit.nalu.client.component.AbstractComponentController;
 import com.github.nalukit.nalu.client.component.annotation.Controller;
 import com.schubec.dominoui.guibuilder.client.GuiBuilderContext;
-import com.schubec.dominoui.guibuilder.client.event.StatusChangeEvent;
-import com.schubec.dominoui.guibuilder.client.model.MyModel;
+
 import elemental2.dom.HTMLElement;
-import java.lang.Override;
 
 /**
  * Copyright (C) 2018 - 2019 Frank Hossfeld <frank.hossfeld@googlemail.com>
@@ -24,13 +22,12 @@ import java.lang.Override;
  * limitations under the License.
  */
 @Controller(
-    route = "/application/screen01",
+    route = "/application/guibuilder",
     selector = "content",
     componentInterface = IScreen01Component.class,
     component = Screen01Component.class
 )
 public class Screen01Controller extends AbstractComponentController<GuiBuilderContext, IScreen01Component, HTMLElement> implements IScreen01Component.Controller {
-  private MyModel model;
 
   public Screen01Controller() {
   }
