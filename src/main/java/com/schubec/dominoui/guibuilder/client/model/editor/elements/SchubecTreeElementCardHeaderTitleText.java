@@ -9,7 +9,7 @@ import elemental2.dom.HTMLHeadingElement;
 public class SchubecTreeElementCardHeaderTitleText extends SchubecTreeElement {
 
 	public SchubecTreeElementCardHeaderTitleText(DominoElement<HTMLHeadingElement> dominoElement) {
-		super(dominoElement, "div");
+		super(dominoElement, null);
 		setRemoveable(false);
 		setHasSourcecode(false);
 	}

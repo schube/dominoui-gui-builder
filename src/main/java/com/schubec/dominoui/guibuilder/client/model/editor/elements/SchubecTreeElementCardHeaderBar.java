@@ -8,13 +8,14 @@ import elemental2.dom.HTMLUListElement;
 
 public class SchubecTreeElementCardHeaderBar extends SchubecTreeElement {
 
+	public static final String TYPE = "CardHeaderBar";
 	public SchubecTreeElementCardHeaderBar(DominoElement<HTMLUListElement> dominoElement) {
-		super(dominoElement, "div");
+		super(dominoElement, null);
 		setRemoveable(false);
 		setHasSourcecode(false);
 	}
 	public String getType() {
-		return "CardHeaderBar";
+		return TYPE;
 	}
 	@Override
 	public String toString() {

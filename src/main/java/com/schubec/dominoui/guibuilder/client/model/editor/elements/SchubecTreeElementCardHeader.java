@@ -1,19 +1,19 @@
 package com.schubec.dominoui.guibuilder.client.model.editor.elements;
 
-import org.dominokit.domino.ui.cards.Card;
 import org.dominokit.domino.ui.utils.DominoElement;
 
 import elemental2.dom.HTMLDivElement;
 
 public class SchubecTreeElementCardHeader extends SchubecTreeElement {
 
+	public static final String TYPE = "CardHeader";
 	public SchubecTreeElementCardHeader(DominoElement<HTMLDivElement> element) {
-		super(element, "div");
+		super(element, null);
 		setRemoveable(false);
 		setHasSourcecode(false);
 	}
 	public String getType() {
-		return "CardHeader";
+		return TYPE;
 	}
 	@Override
 	public String toString() {

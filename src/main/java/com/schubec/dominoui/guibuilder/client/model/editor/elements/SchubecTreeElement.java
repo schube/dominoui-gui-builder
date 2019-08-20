@@ -68,11 +68,12 @@ public class SchubecTreeElement {
 		return "";
 	}
 	public JsPropertyMap<Object> toJson() {
-		JsArray<Object> children = new JsArray<>();
-		JsPropertyMap<Object> result = JsPropertyMap.of();
-		result.set("name", getName());
-		result.set("type", getType());
 		
+		JsPropertyMap<Object> result = JsPropertyMap.of();
+		result.set("type", getType());
+		if(getName()!=null) {
+			result.set("name", getName());
+		}
 		return result;
 	}
 	public void setProperty(String key, String newValue) {
