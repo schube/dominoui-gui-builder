@@ -3,10 +3,14 @@ package com.schubec.dominoui.guibuilder.client.ui.screen01;
 import com.github.nalukit.nalu.client.component.AbstractComponent;
 import com.google.gwt.core.client.GWT;
 
+import elemental2.core.Global;
+import elemental2.core.JsArray;
 import elemental2.dom.HTMLDivElement;
 import elemental2.dom.HTMLElement;
 import elemental2.dom.HTMLHeadingElement;
 import elemental2.dom.NodeList.ForEachCallbackFn;
+import jsinterop.base.JsPropertyMap;
+
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElement;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementBadge;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementButton;
@@ -103,23 +107,31 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		checkboxBorders.setValue(true);
 		// cardCanvas.getHeaderDescription().appendChild(checkboxBorders);
 
-		cardCanvas.addHeaderAction(Icons.ALL.more_vert(), click -> {
-			StringBuffer javaSourcecode = new StringBuffer();
-			StringBuffer jsonSourcecode = new StringBuffer();
-			iterateTree(treeItem -> {
-				javaSourcecode.append(treeItem.getValue().toSourcecode());
-				jsonSourcecode.append(treeItem.getValue().toJson());
-				return false;
+		
+		
+			CodeCard javaCodeCard = CodeCard.createCodeCard("Java Source Code", "", "java");
+			javaCodeCard.getCard().getBody().addShowHandler(() -> {
+				StringBuffer javaSourcecode = new StringBuffer();
+				iterateTree(treeItem -> {
+					javaSourcecode.append(treeItem.getValue().toSourcecode());
+					return false;
+				});
+				javaSourcecode.append(
+						"initElement(root.asElement()); //init Element for use with Nalu. Remove, if you are not using Nalu.\n");
+				javaCodeCard.setCode(javaSourcecode.toString());
 			});
-			javaSourcecode.append(
-					"initElement(root.asElement()); //init Element for use with Nalu. Remove, if you are not using Nalu.\n");
+			CodeCard jsonCodeCard = CodeCard.createCodeCard("JSON", "", "javascript");
+			jsonCodeCard.getCard().getBody().addShowHandler(() -> {
+				JsArray<Object> json = new JsArray<>();
+				iterateTree(treeItem -> {
+					json.push(treeItem.getValue().toJson());
+					return false;
+				});
 
-			CodeCard javaCodeCard = CodeCard.createCodeCard("Java Source Code", javaSourcecode.toString(), "java");
-			CodeCard jsonCodeCard = CodeCard.createCodeCard("JSON", jsonSourcecode.toString(), "javascript");
-			MessageDialog
-					.createMessage(DominoElement.div().appendChild(javaCodeCard).appendChild(jsonCodeCard).asElement())
-					.open();
-		});
+				String jsonSourcecode = Global.JSON.stringify(json);
+				jsonCodeCard.setCode(jsonSourcecode.replace("},{", "},\n{"));
+			});
+		
 
 		root.style().setMinHeight("200px");
 		root.style().setBackgroundColor("lightgrey");
@@ -127,10 +139,13 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		addDnDHandlerFormElement(root);
 		cardCanvas.appendChild(root);
 
+
 		gridLayout.getLeftElement().appendChild(initElementsTree());
 		gridLayout.getLeftElement().appendChild(initElementChooser());
 		gridLayout.getRightElement().appendChild(initPropertiesPanel());
 		gridLayout.getContentElement().appendChild(cardCanvas.asElement());
+		gridLayout.getContentElement().appendChild(javaCodeCard);
+		gridLayout.getContentElement().appendChild(jsonCodeCard);
 
 		Button btnRefresh = Button.create("Repaint/Refresh");
 		btnRefresh.addClickListener(listener -> rebuildCanvas());

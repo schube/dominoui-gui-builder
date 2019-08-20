@@ -8,6 +8,9 @@ import org.dominokit.domino.ui.utils.BaseDominoElement;
 import com.google.gwt.core.client.GWT;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.EditorProperty;
 
+import elemental2.core.JsArray;
+import jsinterop.base.JsPropertyMap;
+
 public class SchubecTreeElement {
 
 	private boolean isRemoveable = true;
@@ -64,8 +67,13 @@ public class SchubecTreeElement {
 	public String toSourcecode() {
 		return "";
 	}
-	public String toJson() {
-		return "{\"type\" : \""+getType()+"\"}";
+	public JsPropertyMap<Object> toJson() {
+		JsArray<Object> children = new JsArray<>();
+		JsPropertyMap<Object> result = JsPropertyMap.of();
+		result.set("name", getName());
+		result.set("type", getType());
+		result.set("children", children);
+		return result;
 	}
 	public void setProperty(String key, String newValue) {
 		GWT.log("setProperty/String");

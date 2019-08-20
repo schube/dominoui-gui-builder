@@ -8,6 +8,7 @@ import org.dominokit.domino.ui.notifications.Notification;
 import org.dominokit.domino.ui.utils.BaseDominoElement;
 import org.dominokit.domino.ui.utils.DominoDom;
 import org.dominokit.domino.ui.utils.DominoElement;
+import org.dominokit.domino.ui.utils.TextNode;
 import org.gwtproject.safehtml.shared.SafeHtmlBuilder;
 import org.jboss.gwt.elemento.core.Elements;
 import org.jboss.gwt.elemento.core.InputType;
@@ -29,6 +30,7 @@ public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
     private Card card = Card.create("Source Code")
             .setCollapsible()
             .hide()
+            .appendChild(TextNode.of("Collapse and expand for refresh."))
             .appendChild(codeBlock);
 
     public CodeCard(String title) {
@@ -47,7 +49,6 @@ public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
             DomGlobal.document.removeEventListener("copy", copyListener);
             Notification.createInfo("Code copied to clipboard").show();
         });
-
         card.appendChild(copyInput);
 
         init(this);
