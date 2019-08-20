@@ -72,7 +72,7 @@ public class SchubecTreeElement {
 		JsPropertyMap<Object> result = JsPropertyMap.of();
 		result.set("name", getName());
 		result.set("type", getType());
-		result.set("children", children);
+		
 		return result;
 	}
 	public void setProperty(String key, String newValue) {

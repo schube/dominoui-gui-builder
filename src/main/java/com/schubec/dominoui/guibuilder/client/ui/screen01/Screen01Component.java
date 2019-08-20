@@ -90,6 +90,18 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	
+	public JsPropertyMap<Object> y(TreeItem<SchubecTreeElement> rootItem) {
+		JsPropertyMap<Object> json = rootItem.getValue().toJson();
+		if(!rootItem.getSubItems().isEmpty()) {
+			JsArray<Object> children = new JsArray<>();
+			for(TreeItem<SchubecTreeElement> subitem : rootItem.getSubItems()) {
+				children.push(y(subitem));
+			}
+			json.set("children", children);
+		}
+		return json;
+	}
+	
 
 	@Override
 	public void render() {
@@ -127,14 +139,23 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 			});
 			CodeCard jsonCodeCard = CodeCard.createCodeCard("JSON", "", "javascript");
 			jsonCodeCard.getCard().getBody().addShowHandler(() -> {
-				JsArray<Object> json = new JsArray<>();
+				
+				TreeItem<SchubecTreeElement> rootItem = elementsTree.getTreeRoot().getSubItems().get(0);
+				JsPropertyMap<Object> json = y(rootItem);
+				
+				
+				
+				JsArray<Object> json2 = new JsArray<>();
+				
 				iterateTree(treeItem -> {
-					json.push(treeItem.getValue().toJson());
+					treeItem.getParent();
+					
+					json2.push(treeItem.getValue().toJson());
 					return false;
 				});
 
 				String jsonSourcecode = Global.JSON.stringify(json);
-				jsonCodeCard.setCode(jsonSourcecode.replace("},{", "},\n{"));
+				jsonCodeCard.setCode(jsonSourcecode.replace("},", "},\n"));
 			});
 		
 
@@ -525,6 +546,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		TreeItem<SchubecTreeElement> newTreeItemBody = TreeItem.create("Body",
 				new SchubecTreeElementCardBody(newElement.getBody()));
 		addDnDHandler(newTreeItemBody);
+		newTreeItemCard.appendChild(newTreeItemBody);
 
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItemCard);	
