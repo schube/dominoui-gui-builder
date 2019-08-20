@@ -148,7 +148,9 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		gridLayout.getContentElement().appendChild(javaCodeCard);
 		gridLayout.getContentElement().appendChild(jsonCodeCard);
 		
-		Card inputCard = Card.create("Paste JSON");
+		Card inputCard = Card.create("Paste JSON", "Paste JSON from clipboard to restore a layout you build earlier.");
+		inputCard.setCollapsible();
+		inputCard.hide();
 		TextArea textArea = TextArea.create("JSON");
 		inputCard.appendChild(textArea);
 		String j = "{\"type\":\"root\",\"children\":[{\"type\":\"TabsPanel\",\"name\":\"tabsPanel_1000\",\"children\":[{\"type\":\"Tab\",\"name\":\"tab_1001\",\"children\":[{\"type\":\"div\",\"name\":\"div_1002\",\"children\":[{\"type\":\"Card\",\"name\":\"card_1005\",\"children\":[{\"type\":\"CardHeader\",\"children\":[{\"type\":\"CardHeaderBar\",\"children\":[{\"type\":\"Badge\",\"name\":\"badge_1007\"}]},\n" + 
@@ -348,27 +350,34 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 								.setIcon(Icons.ALL.contact_phone())
 								.setHeaderBackground(Color.TEAL));
 
-		List<Button> builderButtons = new LinkedList<>();
-		builderButtons.add(Button.create(SchubecTreeElementButton.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementCheckbox.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementBadge.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementCard.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementChip.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementTextBox.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementTab.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementTabsPanel.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementDiv.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementRow.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementColumn.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementHTMLHeadingElement.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementListGroup.TYPE));
-		builderButtons.add(Button.create(SchubecTreeElementListItem.TYPE));
+		List<Button> builderButtons1 = new LinkedList<>();
+		builderButtons1.add(Button.create(SchubecTreeElementButton.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementCheckbox.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementBadge.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementCard.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementChip.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementTextBox.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementTab.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementTabsPanel.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementRow.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementColumn.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementListGroup.TYPE));
+		builderButtons1.add(Button.create(SchubecTreeElementListItem.TYPE));
 
-		builderButtons.forEach(button -> {
+		builderButtons1.forEach(button -> {
 			initEditorElement(button);
 			accordionPanel1.appendChild(button);
 		});
 
+		List<Button> builderButtons2 = new LinkedList<>();
+		builderButtons2.add(Button.create(SchubecTreeElementDiv.TYPE));
+		builderButtons2.add(Button.create(SchubecTreeElementHTMLHeadingElement.TYPE));
+		
+		builderButtons2.forEach(button -> {
+			initEditorElement(button);
+			accordionPanel2.appendChild(button);
+		});
+		
 		return accordion;
 	}
 

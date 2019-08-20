@@ -41,6 +41,7 @@ public class JSONParser {
 		SourcecodeResult sourcecode =  new SourcecodeResult();		
 		String type = (String)child.get("type");
 		String name = (String)child.get("name");
+		String label = (String)child.get("label");
 		TreeItem<SchubecTreeElement> newElement = factory.createElementAndAddToCanvas(parentElement, type, false);
 		JsArray<Object> properties = (JsArray<Object>)child.get("properties");
 		if(properties!=null) {
@@ -73,6 +74,7 @@ public class JSONParser {
 		if(newElement != null) {
 			
 			newElement.getValue().setName(name);
+			newElement.getValue().setLabel(label);
 			appendToElement = newElement.getValue().getElement();
 			if(newElement.getValue().hasSourcecode()) {
 				sourcecode.setName(name);

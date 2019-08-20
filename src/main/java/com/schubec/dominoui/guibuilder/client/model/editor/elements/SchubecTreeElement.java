@@ -76,6 +76,9 @@ public class SchubecTreeElement {
 		if(getName()!=null && !getName().isEmpty()) {
 			result.set("name", getName());
 		}
+		if(getLabel()!=null && !getLabel().equals("<not implemented>")) {
+			result.set("label", getLabel());
+		}
 		JsArray<Object> propertiesArray = new JsArray<>();
 		Map<String, EditorProperty> properties = getProperties();
 		for(EditorProperty propery: properties.values()) {
