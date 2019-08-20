@@ -200,6 +200,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		elementsTree.getSubItems().get(0).getSubItems().forEach(subitem -> subitem.remove());
 		cardCanvas.appendChild(root);
         JsArray<JsPropertyMap<Object>> children = Js.uncheckedCast(map.get("children"));
+        if(children!=null) {
         for(JsPropertyMap<Object> child : children.asList()) {
         	JSONParser parser = new JSONParser(factory);
         	SourcecodeResult javaSource = parser.parseChildren(root, child);
@@ -208,7 +209,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
         		javaSourcecode.append("root.appendChild("+javaSource.getName()+");\n");
 			}
         }
-        
+        }
         return javaSourcecode.toString();
 		
 	}
@@ -221,7 +222,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 				.style()
 				.setMinHeight("500px").get();
 		gridLayout.setGap("10px");
-		gridLayout.setLeftSpan(SectionSpan._2, false, false);
+		gridLayout.setLeftSpan(SectionSpan._4, false, false);
 		gridLayout.setRightSpan(SectionSpan._2, false, false);
 		return gridLayout;
 	}
