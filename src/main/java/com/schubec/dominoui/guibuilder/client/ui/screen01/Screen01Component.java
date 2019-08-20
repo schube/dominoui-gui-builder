@@ -16,6 +16,7 @@ import org.dominokit.domino.ui.forms.TextBox;
 import org.dominokit.domino.ui.grid.GridLayout;
 import org.dominokit.domino.ui.grid.SectionSpan;
 import org.dominokit.domino.ui.icons.Icons;
+import org.dominokit.domino.ui.notifications.Notification;
 import org.dominokit.domino.ui.style.Color;
 import org.dominokit.domino.ui.tree.Tree;
 import org.dominokit.domino.ui.tree.TreeItem;
@@ -38,6 +39,7 @@ import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeE
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementHTMLHeadingElement;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementListGroup;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementListItem;
+import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementRoot;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementRow;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTab;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTabsPanel;
@@ -62,10 +64,11 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	private SchubecTreeElement selectedFormElement;
 	private DominoElement<HTMLDivElement> root = DominoElement.div();
 	private DominoElement<HTMLDivElement> extendedProperties = DominoElement.div();
-	private AccordionPanel propertiesPanel;
+	private Card propertiesPanel;
 	private CheckBox checkboxShowVisualHelpers;
 	private final Factory factory;
 	private final Treehelper treehelper;
+	private SchubecTreeElementRoot rootTreeElement;
 	
 	public Screen01Component() {
 		super();
@@ -126,21 +129,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 			CodeCard jsonCodeCard = CodeCard.createCodeCard("JSON", "", "javascript");
 			jsonCodeCard.getCard().getBody().addShowHandler(() -> {
 				
-				TreeItem<SchubecTreeElement> rootItem = elementsTree.getTreeRoot().getSubItems().get(0);
-				JsPropertyMap<Object> json = createJsonRecursively(rootItem);
-				
-				
-				
-				JsArray<Object> json2 = new JsArray<>();
-				
-				treehelper.iterateTree(treeItem -> {
-					treeItem.getParent();
-					
-					json2.push(treeItem.getValue().toJson());
-					return false;
-				});
-
-				String jsonSourcecode = Global.JSON.stringify(json);
+				String jsonSourcecode = getCanvasAsJson();
 				jsonCodeCard.setCode(jsonSourcecode.replace("},", "},\n"));
 			});
 		
@@ -162,45 +151,11 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		Card inputCard = Card.create("Paste JSON");
 		TextArea textArea = TextArea.create("JSON");
 		inputCard.appendChild(textArea);
-		String j = "{\n" + 
-				"  \"type\" : \"div\",\n" + 
-				"  \"name\" : \"div_1000\",\n" + 
-				"  \"children\" : [\n" + 
-				"    {\n" + 
-				"      \"type\" : \"Card\",\n" + 
-				"      \"name\" : \"card_1001\",\n" + 
-				"      \"children\" : [\n" + 
-				"        {\n" + 
-				"          \"type\" : \"CardHeader\",\n" + 
-				"          \"children\" : [\n" + 
-				"            {\n" + 
-				"              \"type\" : \"CardHeaderBar\"\n" + 
-				"            },\n" + 
-				"            {\n" + 
-				"              \"type\" : \"CardHeaderDescription\"\n" + 
-				"            },\n" + 
-				"            {\n" + 
-				"              \"type\" : \"CardHeaderTitle\",\n" + 
-				"              \"children\" : [\n" + 
-				"                {\n" + 
-				"                  \"type\" : \"Chip\",\n" + 
-				"                  \"name\" : \"chip_1004\"\n" + 
-				"                }\n" + 
-				"              ]\n" + 
-				"            }\n" + 
-				"          ]\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"type\" : \"CardBody\"\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"type\" : \"Badge\",\n" + 
-				"          \"name\" : \"badge_1002\"\n" + 
-				"        }\n" + 
-				"      ]\n" + 
-				"    }\n" + 
-				"  ]\n" + 
-				"}";
+		String j = "{\"type\":\"root\",\"children\":[{\"type\":\"TabsPanel\",\"name\":\"tabsPanel_1000\",\"children\":[{\"type\":\"Tab\",\"name\":\"tab_1001\",\"children\":[{\"type\":\"div\",\"name\":\"div_1002\",\"children\":[{\"type\":\"Card\",\"name\":\"card_1005\",\"children\":[{\"type\":\"CardHeader\",\"children\":[{\"type\":\"CardHeaderBar\",\"children\":[{\"type\":\"Badge\",\"name\":\"badge_1007\"}]},\n" + 
+				"{\"type\":\"CardHeaderDescription\"},\n" + 
+				"{\"type\":\"CardHeaderTitle\"}]},\n" + 
+				"{\"type\":\"CardBody\",\"children\":[{\"type\":\"TabsPanel\",\"name\":\"tabsPanel_1008\",\"children\":[{\"type\":\"Tab\",\"name\":\"tab_1009\",\"children\":[{\"type\":\"div\",\"name\":\"div_1010\"}]}]}]}]}]}]},\n" + 
+				"{\"type\":\"Tab\",\"name\":\"tab_1003\",\"children\":[{\"type\":\"div\",\"name\":\"div_1004\",\"children\":[{\"type\":\"Chip\",\"name\":\"chip_1006\"}]}]}]}]}";
 		textArea.setValue(j);
 		Button btnParse = Button.create("Parse");
 		inputCard.appendChild(btnParse);
@@ -218,23 +173,42 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		initElement(gridLayout.asElement());
 	}
 
+
+	private String getCanvasAsJson() {
+		TreeItem<SchubecTreeElement> rootItem = elementsTree.getTreeRoot().getSubItems().get(0);
+		JsPropertyMap<Object> json = createJsonRecursively(rootItem);
+		
+		
+		
+		
+		
+
+		String jsonSourcecode = Global.JSON.stringify(json);
+		return jsonSourcecode;
+	}
+
 	private String parse(String json) {
 		StringBuffer javaSourcecode = new StringBuffer();
 		JsPropertyMap<Object> map= Js.uncheckedCast(Global.JSON.parse(json));
 		String type = (String)map.get("type");
-		String name = (String)map.get("name");
-		root.remove();
-		TreeItem<SchubecTreeElement> newElement = factory.createElementAndAddToCanvas(root, type, true);
-		newElement.getValue().setName(name);
-		
-		root = (DominoElement<HTMLDivElement>) newElement.getValue().getElement();
+		if(!type.equals("root")) {
+			Notification.createDanger("JSON does not begin with root node").show();
+			return "";
+		}
+		javaSourcecode.append(rootTreeElement.toSourcecode());
+		root.clearElement();
+		elementsTree.getSubItems().get(0).getSubItems().forEach(subitem -> subitem.remove());
 		cardCanvas.appendChild(root);
         JsArray<JsPropertyMap<Object>> children = Js.uncheckedCast(map.get("children"));
         for(JsPropertyMap<Object> child : children.asList()) {
         	JSONParser parser = new JSONParser(factory);
-        	SourcecodeResult javaSource = parser.parseChildren(newElement.getValue().getElement(), child);
+        	SourcecodeResult javaSource = parser.parseChildren(root, child);
         	javaSourcecode.append(javaSource.getSourcecode());
+        	if(javaSource.getName()!=null) {
+        		javaSourcecode.append("root.appendChild("+javaSource.getName()+");\n");
+			}
         }
+        
         return javaSourcecode.toString();
 		
 	}
@@ -255,8 +229,8 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	
 
 	private Tree<SchubecTreeElement> initElementsTree() {
-		
-		elementsTree.appendChild(TreeItem.create("ROOT", new SchubecTreeElementDiv(root)));
+		rootTreeElement = new SchubecTreeElementRoot(root);
+		elementsTree.appendChild(TreeItem.create("ROOT", rootTreeElement));
 		elementsTree.addItemClickListener(itemClickListener -> {
 
 			// Notification.create("Selected").show();
@@ -322,7 +296,9 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 				}
 
 			});
-			extendedProperties.appendChild(btnRemove);
+			if(selectedFormElement.isRemoveable()) {
+				extendedProperties.appendChild(btnRemove);
+			}
 		});
 		return elementsTree;
 	}
@@ -333,13 +309,8 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void rebuildCanvas() {
-		// Delete everything
-		cardCanvas.getBody().clearElement();
-		// Add elements recursively
-		treehelper.iterateTree(treeItem -> {
-			addChildrenTo(cardCanvas, treeItem);
-			return false;
-		});
+		ElementCounter.reset();
+		parse(getCanvasAsJson());
 	}
 
 	private void addChildrenTo(BaseDominoElement parentElement, TreeItem<SchubecTreeElement> elementToBeAppended) {
@@ -400,25 +371,8 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		return accordion;
 	}
 
-	private Accordion initPropertiesPanel() {
-		propertiesPanel = AccordionPanel.create(
-				"Basic Elements")
-				.setIcon(Icons.ALL.perm_contact_calendar())
-				.setHeaderBackground(Color.PINK)
-				.show();
-		Accordion accordion2 = Accordion.create()
-				.appendChild(
-						propertiesPanel)
-				.appendChild(
-						AccordionPanel.create(
-								"Collapsible item 2", TextNode.of("TEST"))
-								.setIcon(Icons.ALL.cloud_download())
-								.setHeaderBackground(Color.CYAN))
-				.appendChild(
-						AccordionPanel.create(
-								"Collapsible item 3", TextNode.of("TEST"))
-								.setIcon(Icons.ALL.contact_phone())
-								.setHeaderBackground(Color.TEAL));
+	private Card initPropertiesPanel() {
+		propertiesPanel = Card.create("Properties");
 
 		name = TextBox.create("Name").small().floating();
 		name.addChangeHandler(changeHandler -> {
@@ -430,7 +384,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		});
 		propertiesPanel.appendChild(name);
 		propertiesPanel.appendChild(label);
-		return accordion2;
+		return propertiesPanel;
 	}
 
 	private void initEditorElement(Button button) {

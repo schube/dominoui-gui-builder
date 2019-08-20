@@ -12,6 +12,8 @@ import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.Datatype;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.EditorProperty;
 
+import jsinterop.base.JsPropertyMap;
+
 public class SchubecTreeElementButton extends SchubecTreeElement {
 	private Button element; 
 	public static final String TYPE = "Button";
@@ -30,12 +32,12 @@ public class SchubecTreeElementButton extends SchubecTreeElement {
 		List<String> buttonSizevalues = new LinkedList<>();
 		List<ButtonSize> buttonSizes = Arrays.asList(ButtonSize.values());
 		buttonSizes.forEach(element -> buttonSizevalues.add(element.toString()));
-		properties.put("size", new EditorProperty<String>("size", Datatype.ENUM, buttonSizevalues, ButtonSize.LARGE.toString()));
+		properties.put("size", new EditorProperty<String>("size", Datatype.ENUM, buttonSizevalues, ButtonSize.SMALL.toString()));
 		
 		List<String> buttonStyleValues = new LinkedList<>();
 		List<StyleType> buttonStyles = Arrays.asList(StyleType.values());
 		buttonStyles.forEach(element -> buttonStyleValues.add(element.toString()));
-		properties.put("style", new EditorProperty<String>("style", Datatype.ENUM, buttonStyleValues,StyleType.DEFAULT.toString() ));
+		properties.put("style", new EditorProperty<String>("style", Datatype.ENUM, buttonStyleValues, StyleType.DANGER.toString()));
 		
 		return properties;
 	}
@@ -65,4 +67,6 @@ public class SchubecTreeElementButton extends SchubecTreeElement {
 		sb.append("Button "+getName()+" = Button.create(\""+getLabel()+"\");\n");
 		return sb.toString();
 	}
+		
+	
 }

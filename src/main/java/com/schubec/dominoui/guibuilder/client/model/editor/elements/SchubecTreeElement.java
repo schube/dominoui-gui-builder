@@ -1,13 +1,16 @@
 package com.schubec.dominoui.guibuilder.client.model.editor.elements;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.dominokit.domino.ui.utils.BaseDominoElement;
 
 import com.google.gwt.core.client.GWT;
+import com.schubec.dominoui.guibuilder.client.ui.screen01.Datatype;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.EditorProperty;
 
+import elemental2.core.JsArray;
 import jsinterop.base.JsPropertyMap;
 
 public class SchubecTreeElement {
@@ -70,9 +73,32 @@ public class SchubecTreeElement {
 		
 		JsPropertyMap<Object> result = JsPropertyMap.of();
 		result.set("type", getType());
-		if(getName()!=null) {
+		if(getName()!=null && !getName().isEmpty()) {
 			result.set("name", getName());
 		}
+		JsArray<Object> propertiesArray = new JsArray<>();
+		Map<String, EditorProperty> properties = getProperties();
+		for(EditorProperty propery: properties.values()) {
+			if (propery.getDatatype() == Datatype.STRING && propery.getValue()!=null) {
+				JsPropertyMap<Object> propertyJson = JsPropertyMap.of(propery.getName(), propery.getValue()); 
+				propertiesArray.push(propertyJson);
+			}
+			if (propery.getDatatype() == Datatype.ENUM && propery.getValue()!=null) {
+				JsPropertyMap<Object> propertyJson = JsPropertyMap.of(propery.getName(), propery.getValue()); 
+				propertiesArray.push(propertyJson);
+			}
+			if (propery.getDatatype() == Datatype.INTEGER) {
+				int value = (Integer)propery.getValue();
+				
+				JsPropertyMap<Object> propertyJson = JsPropertyMap.of(propery.getName(), value); 
+				propertiesArray.push(propertyJson);
+			}
+			if (propery.getDatatype() == Datatype.BOOLEAN) {
+				JsPropertyMap<Object> propertyJson = JsPropertyMap.of(propery.getName(), (Boolean)propery.getValue()); 
+				propertiesArray.push(propertyJson);
+			}			
+		}
+		result.set("properties", propertiesArray);
 		return result;
 	}
 	public void setProperty(String key, String newValue) {

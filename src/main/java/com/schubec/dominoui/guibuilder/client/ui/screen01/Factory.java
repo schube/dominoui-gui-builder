@@ -36,6 +36,7 @@ import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeE
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementColumn;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementDiv;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementHTMLHeadingElement;
+import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementChipLeftAddon;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementListGroup;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementListItem;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementRow;
@@ -89,7 +90,7 @@ public class Factory {
 	}
 	private TreeItem createListGroup(BaseDominoElement parent, boolean createHelperObjects) {
 		SimpleListGroup newElement = SimpleListGroup.create();
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		
 			TreeItem newTreeItem = TreeItem.create("SimpleListGroup", new SchubecTreeElementListGroup(newElement));
 			treehelper.find(parent.getDominoId(), parentTreeItem -> {
@@ -103,7 +104,7 @@ public class Factory {
 	}
 	private TreeItem createListItem(BaseDominoElement parent, boolean createHelperObjects) {
 		SimpleListItem newElement = SimpleListItem.create("New SimpleListItem");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		
 			TreeItem newTreeItem = TreeItem.create("SimpleListItem", new SchubecTreeElementListItem(newElement));
 			treehelper.find(parent.getDominoId(), parentTreeItem -> {
@@ -112,21 +113,30 @@ public class Factory {
 			return newTreeItem;
 	}
 	private TreeItem createChip(BaseDominoElement parent, boolean createHelperObjects) {
-		Chip newElement = Chip.create("New Chip");
-		x(newElement, parent);
+			Chip newElement = Chip.create("New Chip");
+			addToCanvas(newElement, parent);
 		
 			TreeItem newTreeItem = TreeItem.create("Chip", new SchubecTreeElementChip(newElement));
 			treehelper.find(parent.getDominoId(), parentTreeItem -> {
 				parentTreeItem.appendChild(newTreeItem);	
 			});
+			
+			TreeItem newTreeItem2 = TreeItem.create("leftAddOn", new SchubecTreeElementChipLeftAddon(newElement.getLeftAddonContainer()));
+			newTreeItem.appendChild(newTreeItem2);	
+			addDnDHandlerFormElement(newElement.getLeftAddonContainer());
+			addDnDHandler(newTreeItem2);
+			
 			return newTreeItem;
 	}
 
+	
+	
+	
 	private TreeItem createCard(BaseDominoElement parent, boolean createHelperObjects) {
 		Card newElement = Card.create("New Card");
 		addDnDHandlerFormElement(newElement.getHeader());
 		addDnDHandlerFormElement(newElement.getBody());
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 
 		
 
@@ -164,7 +174,7 @@ public class Factory {
 
 	private TreeItem createBadge(BaseDominoElement parent, boolean createHelperObjects) {
 		Badge newElement = Badge.create("New badge");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		TreeItem newTreeItem = TreeItem.create("Badge", new SchubecTreeElementBadge(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
@@ -185,7 +195,7 @@ public class Factory {
 
 	private TreeItem createCheckbox(BaseDominoElement parent, boolean createHelperObjects) {
 		CheckBox newElement = CheckBox.create("New Button");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		TreeItem newTreeItem = TreeItem.create("Checkbox", new SchubecTreeElementCheckbox(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
@@ -195,7 +205,7 @@ public class Factory {
 
 	private TreeItem createButton(BaseDominoElement parent, boolean createHelperObjects) {
 		Button newElement = Button.create("New Button");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		TreeItem newTreeItem = TreeItem.create("Button", new SchubecTreeElementButton(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
@@ -206,7 +216,7 @@ public class Factory {
 	private TreeItem createRow(BaseDominoElement parent, boolean createHelperObjects) {
 		Row newElement = Row.create();
 		newElement.style().setMinHeight("200px");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 
 		TreeItem newTreeItem = TreeItem.create("Row", new SchubecTreeElementRow(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
@@ -223,7 +233,7 @@ public class Factory {
 	private TreeItem createColumn(BaseDominoElement parent, boolean createHelperObjects) {
 		Column newElement = Column.span();
 
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 
 		TreeItem newTreeItem = TreeItem.create("Column", new SchubecTreeElementColumn(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
@@ -238,7 +248,7 @@ public class Factory {
 	private TreeItem createH(BaseDominoElement parent, boolean createHelperObjects) {
 		DominoElement<HTMLHeadingElement> newElement = DominoElement.of(h(1));
 		newElement.setTextContent("Title");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create("Heading",
 				new SchubecTreeElementHTMLHeadingElement(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
@@ -255,7 +265,7 @@ public class Factory {
 	private TreeItem createDiv(BaseDominoElement parent, String label, boolean createHelperObjects) {
 		DominoElement<HTMLDivElement> newElement = DominoElement.div();
 		newElement.style().setMinHeight("200px");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create(label, new SchubecTreeElementDiv(newElement));
 		treehelper.find( parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);
@@ -272,7 +282,7 @@ public class Factory {
 	}
 	private TreeItem createTabsPanel(BaseDominoElement parent, boolean createHelperObjects) {
 		TabsPanel newElement = TabsPanel.create();
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 		TreeItem newTreeItem = TreeItem.create("TabsPanel", new SchubecTreeElementTabsPanel(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
@@ -287,7 +297,7 @@ public class Factory {
 
 	private TreeItem createTab(BaseDominoElement parent, boolean createHelperObjects) {
 		Tab newElement = Tab.create("New Tab");
-		x(newElement, parent);
+		addToCanvas(newElement, parent);
 
 		TreeItem newTreeItem = TreeItem.create("Tab", new SchubecTreeElementTab(newElement));
 		treehelper.find(parent.getDominoId(), parentTreeItem -> {
@@ -306,7 +316,7 @@ public class Factory {
 
 	}
 
-	private void x(BaseDominoElement newElement, BaseDominoElement parent) {
+	private void addToCanvas(BaseDominoElement newElement, BaseDominoElement parent) {
 		addDnDHandlerFormElement(newElement);
 		//if(checkboxShowVisualHelpers.getValue()) {
 			
