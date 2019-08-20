@@ -1,27 +1,36 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.dominokit.domino.ui.button.Button;
+import org.dominokit.domino.ui.cards.Card;
+import org.dominokit.domino.ui.collapsible.Accordion;
+import org.dominokit.domino.ui.collapsible.AccordionPanel;
+import org.dominokit.domino.ui.forms.CheckBox;
+import org.dominokit.domino.ui.forms.IntegerBox;
+import org.dominokit.domino.ui.forms.Select;
+import org.dominokit.domino.ui.forms.SelectOption;
+import org.dominokit.domino.ui.forms.TextArea;
+import org.dominokit.domino.ui.forms.TextBox;
+import org.dominokit.domino.ui.grid.GridLayout;
+import org.dominokit.domino.ui.grid.SectionSpan;
+import org.dominokit.domino.ui.icons.Icons;
+import org.dominokit.domino.ui.style.Color;
+import org.dominokit.domino.ui.tree.Tree;
+import org.dominokit.domino.ui.tree.TreeItem;
+import org.dominokit.domino.ui.utils.BaseDominoElement;
+import org.dominokit.domino.ui.utils.DominoElement;
+import org.dominokit.domino.ui.utils.TextNode;
+import org.jboss.gwt.elemento.core.EventType;
+
 import com.github.nalukit.nalu.client.component.AbstractComponent;
 import com.google.gwt.core.client.GWT;
-
-import elemental2.core.Global;
-import elemental2.core.JsArray;
-import elemental2.dom.HTMLDivElement;
-import elemental2.dom.HTMLElement;
-import elemental2.dom.HTMLHeadingElement;
-import elemental2.dom.NodeList.ForEachCallbackFn;
-import jsinterop.base.Js;
-import jsinterop.base.JsPropertyMap;
-
 import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElement;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementBadge;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementButton;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCard;
-import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCardBody;
-import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCardHeader;
-import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCardHeaderBar;
-import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCardHeaderDescription;
-import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCardHeaderTitle;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementCheckbox;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementChip;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementColumn;
@@ -33,50 +42,16 @@ import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeE
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTab;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTabsPanel;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTextBox;
-import com.schubec.dominoui.guibuilder.client.ui.screen01.Datatype;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.code.CodeCard;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.code.JSONParser;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.code.SourcecodeResult;
 
-import static org.jboss.gwt.elemento.core.Elements.h;
-
-import java.lang.Override;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
-import org.dominokit.domino.ui.animations.Animation;
-import org.dominokit.domino.ui.animations.Transition;
-import org.dominokit.domino.ui.badges.Badge;
-import org.dominokit.domino.ui.button.Button;
-import org.dominokit.domino.ui.cards.Card;
-import org.dominokit.domino.ui.chips.Chip;
-import org.dominokit.domino.ui.collapsible.Accordion;
-import org.dominokit.domino.ui.collapsible.AccordionPanel;
-import org.dominokit.domino.ui.dialogs.MessageDialog;
-import org.dominokit.domino.ui.forms.CheckBox;
-import org.dominokit.domino.ui.forms.IntegerBox;
-import org.dominokit.domino.ui.forms.Select;
-import org.dominokit.domino.ui.forms.SelectOption;
-import org.dominokit.domino.ui.forms.TextArea;
-import org.dominokit.domino.ui.forms.TextBox;
-import org.dominokit.domino.ui.grid.Column;
-import org.dominokit.domino.ui.grid.GridLayout;
-import org.dominokit.domino.ui.grid.Row;
-import org.dominokit.domino.ui.grid.SectionSpan;
-import org.dominokit.domino.ui.icons.Icons;
-import org.dominokit.domino.ui.lists.SimpleListGroup;
-import org.dominokit.domino.ui.lists.SimpleListItem;
-import org.dominokit.domino.ui.notifications.Notification;
-import org.dominokit.domino.ui.style.Color;
-import org.dominokit.domino.ui.tabs.Tab;
-import org.dominokit.domino.ui.tabs.TabsPanel;
-import org.dominokit.domino.ui.tree.Tree;
-import org.dominokit.domino.ui.tree.TreeItem;
-import org.dominokit.domino.ui.utils.BaseDominoElement;
-import org.dominokit.domino.ui.utils.DominoElement;
-import org.dominokit.domino.ui.utils.TextNode;
-import org.jboss.gwt.elemento.core.EventType;
+import elemental2.core.Global;
+import elemental2.core.JsArray;
+import elemental2.dom.HTMLDivElement;
+import elemental2.dom.HTMLElement;
+import jsinterop.base.Js;
+import jsinterop.base.JsPropertyMap;
 
 public class Screen01Component extends AbstractComponent<IScreen01Component.Controller, HTMLElement>
 		implements IScreen01Component {

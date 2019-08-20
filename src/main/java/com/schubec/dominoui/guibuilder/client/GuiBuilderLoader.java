@@ -2,7 +2,6 @@ package com.schubec.dominoui.guibuilder.client;
 
 import com.github.nalukit.nalu.client.application.AbstractApplicationLoader;
 import com.github.nalukit.nalu.client.application.IsApplicationLoader;
-import java.lang.Override;
 
 /**
  * Copyright (C) 2018 - 2019 Frank Hossfeld <frank.hossfeld@googlemail.com>
