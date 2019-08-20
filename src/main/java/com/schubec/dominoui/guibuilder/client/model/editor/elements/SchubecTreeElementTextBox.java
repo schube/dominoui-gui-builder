@@ -3,9 +3,7 @@ import java.util.Map;
 
 import org.dominokit.domino.ui.forms.TextBox;
 
-import com.google.gwt.core.client.GWT;
 import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
-import com.schubec.dominoui.guibuilder.client.model.UUID;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.Datatype;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.EditorProperty;
 
@@ -39,12 +37,7 @@ public class SchubecTreeElementTextBox extends SchubecTreeElement {
 			element.setReadOnly(newValue);
 		}
 	}
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("TextBox with ID " + element.getDominoId() + "\n");
-		return sb.toString();
-	}
+
 	@Override
 	public String toSourcecode() {
 		StringBuilder sb = new StringBuilder();

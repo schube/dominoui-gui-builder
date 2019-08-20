@@ -254,7 +254,7 @@ public class Factory {
 
 	private TreeItem createDiv(BaseDominoElement parent, String label, boolean createHelperObjects) {
 		DominoElement<HTMLDivElement> newElement = DominoElement.div();
-		newElement.setHeight("200px");
+		newElement.style().setMinHeight("200px");
 		x(newElement, parent);
 		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create(label, new SchubecTreeElementDiv(newElement));
 		treehelper.find( parent.getDominoId(), parentTreeItem -> {

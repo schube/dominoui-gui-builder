@@ -1,5 +1,7 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01.code;
 
+import java.util.Map;
+
 import org.dominokit.domino.ui.cards.Card;
 import org.dominokit.domino.ui.tree.TreeItem;
 import org.dominokit.domino.ui.utils.BaseDominoElement;
@@ -22,27 +24,35 @@ public class JSONParser {
 	private BaseDominoElement currentParseObject;
 	private JSONParser parser;
 	
+	
 	public JSONParser(Factory factory) {
 		this.factory = factory;
 		this.parser = this;
+
 	}
 	
-	
-	public void parseChildren(BaseDominoElement parentElement, JsPropertyMap<Object> child) {
+	//name / sourcecode
+	public SourcecodeResult parseChildren(BaseDominoElement parentElement, JsPropertyMap<Object> child) {
+		SourcecodeResult sourcecode =  new SourcecodeResult();		
 		String type = (String)child.get("type");
 		String name = (String)child.get("name");
 		TreeItem<SchubecTreeElement> newElement = factory.createElementAndAddToCanvas(parentElement, type, false);
 		BaseDominoElement appendToElement = null;
 		if(newElement != null) {
+			
 			newElement.getValue().setName(name);
 			appendToElement = newElement.getValue().getElement();
+			if(newElement.getValue().hasSourcecode()) {
+				sourcecode.setName(name);
+				sourcecode.appendSourcecode(newElement.getValue().toSourcecode());				
+			}
 			
-			currentParseObject = appendToElement;
 			
 		}
+		boolean createNewParser = false;
 		if(type.equals(SchubecTreeElementCard.TYPE)) {
-			parser = new JSONParser(factory);
-			parser.currentParseObject = currentParseObject;
+			currentParseObject = appendToElement;
+			createNewParser=true; //Card with SubElements needs new Parser
 		} else if(type.equals(SchubecTreeElementCardBody.TYPE)) {
 				appendToElement = currentParseObject;
 		} else if(type.equals(SchubecTreeElementCardHeader.TYPE)) {
@@ -57,10 +67,18 @@ public class JSONParser {
 		JsArray<JsPropertyMap<Object>> children = Js.uncheckedCast(child.get("children"));
 		if(children!=null) {
 			for(JsPropertyMap<Object> subchild : children.asList()) {
-				
-				parser.parseChildren(appendToElement, subchild);
+				if(createNewParser) {
+					parser = new JSONParser(factory);
+					parser.currentParseObject = currentParseObject;
+				}
+				SourcecodeResult sourcecodeResult = parser.parseChildren(appendToElement, subchild);
+				sourcecode.appendSourcecode(sourcecodeResult.getSourcecode());
+				if(name!=null && sourcecodeResult.getName()!=null) {
+					sourcecode.appendSourcecode(name + ".appendChild("+sourcecodeResult.getName()+");\n");
+				}
 			}
 		}
+		return sourcecode;
 		
 	}
 }

@@ -1,13 +1,7 @@
 package com.schubec.dominoui.guibuilder.client.model.editor.elements;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.dominokit.domino.ui.cards.Card;
 
 import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
-import com.schubec.dominoui.guibuilder.client.model.UUID;
-
-import elemental2.dom.HTMLDivElement;
 
 public class SchubecTreeElementCard extends SchubecTreeElement {
 	public static final String TYPE = "Card";

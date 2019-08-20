@@ -8,7 +8,6 @@ import org.dominokit.domino.ui.utils.BaseDominoElement;
 import com.google.gwt.core.client.GWT;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.EditorProperty;
 
-import elemental2.core.JsArray;
 import jsinterop.base.JsPropertyMap;
 
 public class SchubecTreeElement {
@@ -52,7 +51,7 @@ public class SchubecTreeElement {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("BaseDominoElement with ID " + element.getDominoId());
+		sb.append(getType() + " with ID " + element.getDominoId());
 		return sb.toString();
 	}
 
@@ -92,9 +91,6 @@ public class SchubecTreeElement {
 		this.isRemoveable = isRemoveable;
 	}
 
-	public BaseDominoElement createInstance() {
-		return null;
-	}
 
 	public boolean hasSourcecode() {
 		return hasSourcecode;

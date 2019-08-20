@@ -15,11 +15,6 @@ public class SchubecTreeElementCardBody extends SchubecTreeElement {
 	public String getType() {
 		return TYPE;
 	}
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("CardBody with ID " + element.getDominoId() + "\n");
-		return sb.toString();
-	}
+	
 
 }

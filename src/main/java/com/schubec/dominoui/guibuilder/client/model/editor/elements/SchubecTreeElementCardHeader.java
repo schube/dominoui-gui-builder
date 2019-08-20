@@ -15,11 +15,6 @@ public class SchubecTreeElementCardHeader extends SchubecTreeElement {
 	public String getType() {
 		return TYPE;
 	}
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Cardheader with ID " + element.getDominoId() + "\n");
-		return sb.toString();
-	}
+	
 
 }

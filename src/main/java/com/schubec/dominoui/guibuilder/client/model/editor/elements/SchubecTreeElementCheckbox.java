@@ -20,16 +20,11 @@ public class SchubecTreeElementCheckbox extends SchubecTreeElement {
 	public void setLabel(String label) {
 		((CheckBox)getElement()).setTextContent(label);
 	}
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Button with ID " + element.getDominoId() + "\n");
-		return sb.toString();
-	}
+
 	@Override
 	public String toSourcecode() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Chip "+getName()+" = Chip.create(\""+getLabel()+"\");\n");
+		sb.append("CheckBox "+getName()+" = CheckBox.create(\""+getLabel()+"\");\n");
 		return sb.toString();
 	}
 }

@@ -2,7 +2,6 @@ package com.schubec.dominoui.guibuilder.client.model.editor.elements;
 import org.dominokit.domino.ui.utils.DominoElement;
 
 import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
-import com.schubec.dominoui.guibuilder.client.model.UUID;
 
 import elemental2.dom.HTMLDivElement;
 
@@ -15,12 +14,7 @@ public class SchubecTreeElementDiv extends SchubecTreeElement {
 	public String getType() {
 		return TYPE;
 	}
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("DIV with ID " + element.getDominoId() + "\n");
-		return sb.toString();
-	}
+
 	@Override
 	public String toSourcecode() {
 		StringBuilder sb = new StringBuilder();

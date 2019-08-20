@@ -12,6 +12,7 @@ import elemental2.dom.NodeList.ForEachCallbackFn;
 import jsinterop.base.Js;
 import jsinterop.base.JsPropertyMap;
 
+import com.schubec.dominoui.guibuilder.client.model.ElementCounter;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElement;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementBadge;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementButton;
@@ -35,6 +36,7 @@ import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeE
 import com.schubec.dominoui.guibuilder.client.ui.screen01.Datatype;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.code.CodeCard;
 import com.schubec.dominoui.guibuilder.client.ui.screen01.code.JSONParser;
+import com.schubec.dominoui.guibuilder.client.ui.screen01.code.SourcecodeResult;
 
 import static org.jboss.gwt.elemento.core.Elements.h;
 
@@ -186,110 +188,39 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		TextArea textArea = TextArea.create("JSON");
 		inputCard.appendChild(textArea);
 		String j = "{\n" + 
-				"  \"name\" : \"div_1000\",\n" + 
 				"  \"type\" : \"div\",\n" + 
+				"  \"name\" : \"div_1000\",\n" + 
 				"  \"children\" : [\n" + 
 				"    {\n" + 
-				"      \"name\" : \"card_1001\",\n" + 
 				"      \"type\" : \"Card\",\n" + 
+				"      \"name\" : \"card_1001\",\n" + 
 				"      \"children\" : [\n" + 
 				"        {\n" + 
-				"          \"name\" : \"div\",\n" + 
 				"          \"type\" : \"CardHeader\",\n" + 
 				"          \"children\" : [\n" + 
 				"            {\n" + 
-				"              \"name\" : \"div\",\n" + 
 				"              \"type\" : \"CardHeaderBar\"\n" + 
 				"            },\n" + 
 				"            {\n" + 
-				"              \"name\" : \"div\",\n" + 
 				"              \"type\" : \"CardHeaderDescription\"\n" + 
 				"            },\n" + 
 				"            {\n" + 
-				"              \"name\" : \"div\",\n" + 
-				"              \"type\" : \"CardHeaderTitle\"\n" + 
-				"            }\n" + 
-				"          ]\n" + 
-				"        },\n" + 
-				"        {\n" + 
-				"          \"name\" : \"div_1002\",\n" + 
-				"          \"type\" : \"CardBody\",\n" + 
-				"          \"children\" : [\n" + 
-				"            {\n" + 
-				"              \"name\" : \"tabsPanel_1003\",\n" + 
-				"              \"type\" : \"TabsPanel\",\n" + 
+				"              \"type\" : \"CardHeaderTitle\",\n" + 
 				"              \"children\" : [\n" + 
 				"                {\n" + 
-				"                  \"name\" : \"tab_1004\",\n" + 
-				"                  \"type\" : \"Tab\",\n" + 
-				"                  \"children\" : [\n" + 
-				"                    {\n" + 
-				"                      \"name\" : \"div_1005\",\n" + 
-				"                      \"type\" : \"div\"\n" + 
-				"                    },\n" + 
-				"                    {\n" + 
-				"                      \"name\" : \"tabsPanel_1006\",\n" + 
-				"                      \"type\" : \"TabsPanel\",\n" + 
-				"                      \"children\" : [\n" + 
-				"                        {\n" + 
-				"                          \"name\" : \"tab_1007\",\n" + 
-				"                          \"type\" : \"Tab\",\n" + 
-				"                          \"children\" : [\n" + 
-				"                            {\n" + 
-				"                              \"name\" : \"div_1008\",\n" + 
-				"                              \"type\" : \"div\"\n" + 
-				"                            }\n" + 
-				"                          ]\n" + 
-				"                        }\n" + 
-				"                      ]\n" + 
-				"                    },\n" + 
-				"                    {\n" + 
-				"                      \"name\" : \"tab_1012\",\n" + 
-				"                      \"type\" : \"Tab\",\n" + 
-				"                      \"children\" : [\n" + 
-				"                        {\n" + 
-				"                          \"name\" : \"div_1013\",\n" + 
-				"                          \"type\" : \"div\"\n" + 
-				"                        }\n" + 
-				"                      ]\n" + 
-				"                    }\n" + 
-				"                  ]\n" + 
-				"                },\n" + 
-				"                {\n" + 
-				"                  \"name\" : \"tabsPanel_1009\",\n" + 
-				"                  \"type\" : \"TabsPanel\",\n" + 
-				"                  \"children\" : [\n" + 
-				"                    {\n" + 
-				"                      \"name\" : \"tab_1010\",\n" + 
-				"                      \"type\" : \"Tab\",\n" + 
-				"                      \"children\" : [\n" + 
-				"                        {\n" + 
-				"                          \"name\" : \"div_1011\",\n" + 
-				"                          \"type\" : \"div\"\n" + 
-				"                        }\n" + 
-				"                      ]\n" + 
-				"                    }\n" + 
-				"                  ]\n" + 
-				"                },\n" + 
-				"                {\n" + 
-				"                  \"name\" : \"tab_1014\",\n" + 
-				"                  \"type\" : \"Tab\",\n" + 
-				"                  \"children\" : [\n" + 
-				"                    {\n" + 
-				"                      \"name\" : \"div_1015\",\n" + 
-				"                      \"type\" : \"div\",\n" + 
-				"                      \"children\" : [\n" + 
-				"                        {\n" + 
-				"                          \"name\" : \"checkbox_1016\",\n" + 
-				"                          \"type\" : \"CheckBox\"\n" + 
-				"                        }\n" + 
-				"                      ]\n" + 
-				"                    }\n" + 
-				"                  ]\n" + 
+				"                  \"type\" : \"Chip\",\n" + 
+				"                  \"name\" : \"chip_1004\"\n" + 
 				"                }\n" + 
 				"              ]\n" + 
 				"            }\n" + 
 				"          ]\n" + 
+				"        },\n" + 
+				"        {\n" + 
+				"          \"type\" : \"CardBody\"\n" + 
+				"        },\n" + 
+				"        {\n" + 
+				"          \"type\" : \"Badge\",\n" + 
+				"          \"name\" : \"badge_1002\"\n" + 
 				"        }\n" + 
 				"      ]\n" + 
 				"    }\n" + 
@@ -298,7 +229,11 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		textArea.setValue(j);
 		Button btnParse = Button.create("Parse");
 		inputCard.appendChild(btnParse);
-		btnParse.addClickListener(evt -> parse(textArea.getValue()));
+		btnParse.addClickListener(evt -> {
+			ElementCounter.reset();
+			String src = parse(textArea.getValue());
+			GWT.log(src);
+		});
 		gridLayout.getContentElement().appendChild(inputCard);
 
 		Button btnRefresh = Button.create("Repaint/Refresh");
@@ -308,8 +243,8 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		initElement(gridLayout.asElement());
 	}
 
-	private void parse(String json) {
-		
+	private String parse(String json) {
+		StringBuffer javaSourcecode = new StringBuffer();
 		JsPropertyMap<Object> map= Js.uncheckedCast(Global.JSON.parse(json));
 		String type = (String)map.get("type");
 		String name = (String)map.get("name");
@@ -322,9 +257,10 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
         JsArray<JsPropertyMap<Object>> children = Js.uncheckedCast(map.get("children"));
         for(JsPropertyMap<Object> child : children.asList()) {
         	JSONParser parser = new JSONParser(factory);
-        	parser.parseChildren(newElement.getValue().getElement(), child);
+        	SourcecodeResult javaSource = parser.parseChildren(newElement.getValue().getElement(), child);
+        	javaSourcecode.append(javaSource.getSourcecode());
         }
-
+        return javaSourcecode.toString();
 		
 	}
 
@@ -334,7 +270,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	private GridLayout initGridLayout() {
 		GridLayout gridLayout = GridLayout.create()
 				.style()
-				.setHeight("500px").get();
+				.setMinHeight("500px").get();
 		gridLayout.setGap("10px");
 		gridLayout.setLeftSpan(SectionSpan._2, false, false);
 		gridLayout.setRightSpan(SectionSpan._2, false, false);

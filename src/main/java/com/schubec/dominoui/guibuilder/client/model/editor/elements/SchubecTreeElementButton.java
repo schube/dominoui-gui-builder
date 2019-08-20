@@ -58,12 +58,7 @@ public class SchubecTreeElementButton extends SchubecTreeElement {
 	public void setLabel(String label) {
 		((Button)getElement()).setTextContent(label);
 	}
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Button with ID " + element.getDominoId() + "\n");
-		return sb.toString();
-	}
+	
 	@Override
 	public String toSourcecode() {
 		StringBuilder sb = new StringBuilder();
