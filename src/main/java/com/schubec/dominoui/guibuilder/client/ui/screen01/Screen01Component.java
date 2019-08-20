@@ -25,6 +25,8 @@ import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeE
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementColumn;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementDiv;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementHTMLHeadingElement;
+import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementListGroup;
+import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementListItem;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementRow;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTab;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElementTabsPanel;
@@ -58,6 +60,8 @@ import org.dominokit.domino.ui.grid.GridLayout;
 import org.dominokit.domino.ui.grid.Row;
 import org.dominokit.domino.ui.grid.SectionSpan;
 import org.dominokit.domino.ui.icons.Icons;
+import org.dominokit.domino.ui.lists.SimpleListGroup;
+import org.dominokit.domino.ui.lists.SimpleListItem;
 import org.dominokit.domino.ui.notifications.Notification;
 import org.dominokit.domino.ui.style.Color;
 import org.dominokit.domino.ui.tabs.Tab;
@@ -79,6 +83,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	private DominoElement<HTMLDivElement> root = DominoElement.div();
 	private DominoElement<HTMLDivElement> extendedProperties = DominoElement.div();
 	private AccordionPanel propertiesPanel;
+	private CheckBox checkboxShowVisualHelpers;
 
 	public Screen01Component() {
 		super();
@@ -92,16 +97,16 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		GridLayout gridLayout = initGridLayout();
 
 		cardCanvas = Card.create("Canvas", "Place add elements with drag & drop to the canvas!");
-		CheckBox checkboxBackgroundcolors = CheckBox.create("Show Backgroundcolors");
-		checkboxBackgroundcolors.setValue(true);
-		checkboxBackgroundcolors.addChangeHandler(changeHandler -> {
-			if (changeHandler) {
-				root.style().setBackgroundColor("lightgrey");
-			} else {
-				root.style().setBackgroundColor("white");
-			}
+		checkboxShowVisualHelpers = CheckBox.create("Show visual helpers");
+		checkboxShowVisualHelpers.setValue(true);
+		checkboxShowVisualHelpers.addChangeHandler(newValue -> {
+			iterateTree(item -> {
+				item.getValue().setShowVisualHelpers(newValue);
+				return false;
+			});
+			
 		});
-		cardCanvas.getHeaderDescription().appendChild(checkboxBackgroundcolors);
+		cardCanvas.getHeaderDescription().appendChild(checkboxShowVisualHelpers);
 
 		CheckBox checkboxBorders = CheckBox.create("Show Borders");
 		checkboxBorders.setValue(true);
@@ -158,7 +163,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		GridLayout gridLayout = GridLayout.create()
 				.style()
 				.setHeight("500px").get();
-
+		gridLayout.setGap("10px");
 		gridLayout.setLeftSpan(SectionSpan._2, false, false);
 		gridLayout.setRightSpan(SectionSpan._2, false, false);
 		return gridLayout;
@@ -302,6 +307,8 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		builderButtons.add(Button.create(SchubecTreeElementRow.TYPE));
 		builderButtons.add(Button.create(SchubecTreeElementColumn.TYPE));
 		builderButtons.add(Button.create(SchubecTreeElementHTMLHeadingElement.TYPE));
+		builderButtons.add(Button.create(SchubecTreeElementListGroup.TYPE));
+		builderButtons.add(Button.create(SchubecTreeElementListItem.TYPE));
 
 		builderButtons.forEach(button -> {
 			initEditorElement(button);
@@ -370,85 +377,116 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 
 	private void addElement(BaseDominoElement element, String type) {
 		switch (type) {
-			case "TextBox":
+			case SchubecTreeElementListGroup.TYPE:
+				createListGroup(element);
+				break;
+			case SchubecTreeElementListItem.TYPE:
+				createListItem(element);
+				break;
+			case SchubecTreeElementTextBox.TYPE:
 				createTextbox(element);
 				break;
-			case "Column":
+			case SchubecTreeElementColumn.TYPE:
 				createColumn(element);
 				break;
-			case "Row":
+			case SchubecTreeElementRow.TYPE:
 				createRow(element);
 				break;
-			case "Button":
+			case SchubecTreeElementButton.TYPE:
 				createButton(element);
 				break;
-			case "CheckBox":
+			case SchubecTreeElementCheckbox.TYPE:
 				createCheckbox(element);
 				break;
-			case "Chip":
+			case SchubecTreeElementChip.TYPE:
 				createChip(element);
 				break;
-			case "Badge":
+			case SchubecTreeElementBadge.TYPE:
 				createBadge(element);
 				break;
-			case "TabsPanel":
+			case SchubecTreeElementTabsPanel.TYPE:
 				createTabsPanel(element);
 				break;
-			case "Tab":
+			case SchubecTreeElementTab.TYPE:
 				createTab(element);
 				break;
-			case "div":
+			case SchubecTreeElementDiv.TYPE:
 				createDiv(element);
 				break;
-			case "h":
+			case SchubecTreeElementHTMLHeadingElement.TYPE:
 				createH(element);
 				break;
-
-			case "Card":
+			case SchubecTreeElementCard.TYPE:
 				createCard(element);
 				break;
 		}
 	}
 
-	private void createTabsPanel(BaseDominoElement element) {
-		TabsPanel tabsPanel = TabsPanel.create();
-		addDnDHandlerFormElement(tabsPanel);
-		element.appendChild(tabsPanel);
-		TreeItem newTreeItem = TreeItem.create("TabsPanel", new SchubecTreeElementTabsPanel(tabsPanel));
-		find(element.getDominoId(), parentTreeItem -> {
+	private void createTabsPanel(BaseDominoElement parent) {
+		TabsPanel newElement = TabsPanel.create();
+		x(newElement, parent);
+		TreeItem newTreeItem = TreeItem.create("TabsPanel", new SchubecTreeElementTabsPanel(newElement));
+		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
 		initEditorElement2(newTreeItem, "TabsPanel");
 		addDnDHandlerFormElement(newTreeItem);
 		
-		createTab(tabsPanel);
+		createTab(newElement);
 	}
 
 	private void createTab(BaseDominoElement parent) {
-		Tab tab = Tab.create("New Tab");
-		tab.appendChild(TextNode.of("Body"));
-		addDnDHandlerFormElement(tab);
+		Tab newElement = Tab.create("New Tab");
+		x(newElement, parent);
 
-		TreeItem newTreeItem = TreeItem.create("Tab", new SchubecTreeElementTab(tab));
+		TreeItem newTreeItem = TreeItem.create("Tab", new SchubecTreeElementTab(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);
 			if (parentTreeItem.getValue().getType().equals("TabsPanel")) {
-				((TabsPanel) parent).appendChild(tab);
+				((TabsPanel) parent).appendChild(newElement);
 			} else {
 				GWT.log("error");
-				parent.appendChild(tab);
+				parent.appendChild(newElement);
 			}
 		});
-		createDiv(tab, "TabBody");
+		createDiv(newElement, "TabBody");
 
 	}
-
-	private void createChip(BaseDominoElement parent) {
-		Chip chip = Chip.create("New Chip");
-		addDnDHandlerFormElement(chip);
-		parent.appendChild(chip);
+	private void x(BaseDominoElement newElement, BaseDominoElement parent) {
+		addDnDHandlerFormElement(newElement);
+		if(checkboxShowVisualHelpers.getValue()) {
+			
+		}
+		parent.appendChild(newElement);
 		
-			TreeItem newTreeItem = TreeItem.create("Chip", new SchubecTreeElementChip(chip));
+	}
+	
+	private void createListGroup(BaseDominoElement parent) {
+		SimpleListGroup newElement = SimpleListGroup.create();
+		x(newElement, parent);
+		
+			TreeItem newTreeItem = TreeItem.create("SimpleListGroup", new SchubecTreeElementListGroup(newElement));
+			find(parent.getDominoId(), parentTreeItem -> {
+				parentTreeItem.appendChild(newTreeItem);	
+			});
+			createListItem(newElement);
+		
+	}
+	private void createListItem(BaseDominoElement parent) {
+		SimpleListItem newElement = SimpleListItem.create("New SimpleListItem");
+		x(newElement, parent);
+		
+			TreeItem newTreeItem = TreeItem.create("SimpleListItem", new SchubecTreeElementListItem(newElement));
+			find(parent.getDominoId(), parentTreeItem -> {
+				parentTreeItem.appendChild(newTreeItem);	
+			});
+		
+	}
+	private void createChip(BaseDominoElement parent) {
+		Chip newElement = Chip.create("New Chip");
+		x(newElement, parent);
+		
+			TreeItem newTreeItem = TreeItem.create("Chip", new SchubecTreeElementChip(newElement));
 			find(parent.getDominoId(), parentTreeItem -> {
 				parentTreeItem.appendChild(newTreeItem);	
 			});
@@ -456,36 +494,37 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void createCard(BaseDominoElement parent) {
-		Card card = Card.create("New Card");
-		addDnDHandlerFormElement(card.getHeader());
-		addDnDHandlerFormElement(card.getBody());
-		parent.appendChild(card);
+		Card newElement = Card.create("New Card");
+		addDnDHandlerFormElement(newElement.getHeader());
+		addDnDHandlerFormElement(newElement.getBody());
+		x(newElement, parent);
 
-		TreeItem<SchubecTreeElement> newTreeItemCard = TreeItem.create("Card", new SchubecTreeElementCard(card));
+		
+
+		TreeItem<SchubecTreeElement> newTreeItemCard = TreeItem.create("Card", new SchubecTreeElementCard(newElement));
 		TreeItem<SchubecTreeElement> newTreeItemHeader = TreeItem.create("Header",
-				new SchubecTreeElementCardHeader(card.getHeader()));
+				new SchubecTreeElementCardHeader(newElement.getHeader()));
 		addDnDHandler(newTreeItemHeader);
 		newTreeItemCard.appendChild(newTreeItemHeader);
 
 		TreeItem<SchubecTreeElement> newTreeItemHeaderBar = TreeItem.create("HeaderBar",
-				new SchubecTreeElementCardHeaderBar(card.getHeaderBar()));
+				new SchubecTreeElementCardHeaderBar(newElement.getHeaderBar()));
 		addDnDHandler(newTreeItemHeaderBar);
 		newTreeItemHeader.appendChild(newTreeItemHeaderBar);
 
 		TreeItem<SchubecTreeElement> newTreeItemHeaderDescription = TreeItem.create("HeaderDescription",
-				new SchubecTreeElementCardHeaderDescription(card.getHeaderDescription()));
+				new SchubecTreeElementCardHeaderDescription(newElement.getHeaderDescription()));
 		addDnDHandler(newTreeItemHeaderDescription);
 		newTreeItemHeader.appendChild(newTreeItemHeaderDescription);
 
 		TreeItem<SchubecTreeElement> newTreeItemHeaderTitle = TreeItem.create("HeaderTitle",
-				new SchubecTreeElementCardHeaderTitle(card.getHeaderTitle()));
+				new SchubecTreeElementCardHeaderTitle(newElement.getHeaderTitle()));
 		addDnDHandler(newTreeItemHeaderTitle);
 		newTreeItemHeader.appendChild(newTreeItemHeaderTitle);
 
 		TreeItem<SchubecTreeElement> newTreeItemBody = TreeItem.create("Body",
-				new SchubecTreeElementCardBody(card.getBody()));
+				new SchubecTreeElementCardBody(newElement.getBody()));
 		addDnDHandler(newTreeItemBody);
-		newTreeItemCard.appendChild(newTreeItemBody);
 
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItemCard);	
@@ -493,30 +532,28 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void createBadge(BaseDominoElement parent) {
-		Badge badge = Badge.create("New badge");
-		addDnDHandlerFormElement(badge);
-		parent.appendChild(badge);
-		TreeItem newTreeItem = TreeItem.create("Badge", new SchubecTreeElementBadge(badge));
+		Badge newElement = Badge.create("New badge");
+		x(newElement, parent);
+		TreeItem newTreeItem = TreeItem.create("Badge", new SchubecTreeElementBadge(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
 	}
 
 	private void createTextbox(BaseDominoElement parent) {
-		TextBox textbox = TextBox.create("New Textbox");
+		TextBox newElement = TextBox.create("New Textbox");
 		// addDndHandler(textbox);
-		parent.appendChild(textbox);
-		TreeItem newTreeItem = TreeItem.create("Textbox", new SchubecTreeElementTextBox(textbox));
+		parent.appendChild(newElement);
+		TreeItem newTreeItem = TreeItem.create("Textbox", new SchubecTreeElementTextBox(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
 	}
 
 	private void createCheckbox(BaseDominoElement parent) {
-		CheckBox checkbox = CheckBox.create("New Button");
-		addDnDHandlerFormElement(checkbox);
-		parent.appendChild(checkbox);
-		TreeItem newTreeItem = TreeItem.create("Checkbox", new SchubecTreeElementCheckbox(checkbox));
+		CheckBox newElement = CheckBox.create("New Button");
+		x(newElement, parent);
+		TreeItem newTreeItem = TreeItem.create("Checkbox", new SchubecTreeElementCheckbox(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
@@ -524,10 +561,9 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void createButton(BaseDominoElement parent) {
-		Button button = Button.create("New Button");
-		addDnDHandlerFormElement(button);
-		parent.appendChild(button);
-		TreeItem newTreeItem = TreeItem.create("Button", new SchubecTreeElementButton(button));
+		Button newElement = Button.create("New Button");
+		x(newElement, parent);
+		TreeItem newTreeItem = TreeItem.create("Button", new SchubecTreeElementButton(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
@@ -535,27 +571,25 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void createRow(BaseDominoElement parent) {
-		Row row = Row.create();
-		row.style().setMinHeight("200px");
-		addDnDHandlerFormElement(row);
-		parent.appendChild(row);
+		Row newElement = Row.create();
+		newElement.style().setMinHeight("200px");
+		x(newElement, parent);
 
-		TreeItem newTreeItem = TreeItem.create("Row", new SchubecTreeElementRow(row));
+		TreeItem newTreeItem = TreeItem.create("Row", new SchubecTreeElementRow(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
 		initEditorElement2(newTreeItem, "Row");
 		addDnDHandler(newTreeItem);
-		createColumn(row);
+		createColumn(newElement);
 	}
 
 	private void createColumn(BaseDominoElement parent) {
-		Column column = Column.span();
+		Column newElement = Column.span();
 
-		addDnDHandlerFormElement(column);
-		parent.appendChild(column);
+		x(newElement, parent);
 
-		TreeItem newTreeItem = TreeItem.create("Column", new SchubecTreeElementColumn(column));
+		TreeItem newTreeItem = TreeItem.create("Column", new SchubecTreeElementColumn(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
@@ -565,12 +599,11 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void createH(BaseDominoElement parent) {
-		DominoElement<HTMLHeadingElement> h = DominoElement.of(h(1));
-		h.setTextContent("Title");
-		addDnDHandlerFormElement(h);
-		parent.appendChild(h);
+		DominoElement<HTMLHeadingElement> newElement = DominoElement.of(h(1));
+		newElement.setTextContent("Title");
+		x(newElement, parent);
 		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create("Heading",
-				new SchubecTreeElementHTMLHeadingElement(h));
+				new SchubecTreeElementHTMLHeadingElement(newElement));
 		find(parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);	
 		});
@@ -583,11 +616,10 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void createDiv(BaseDominoElement parent, String label) {
-		DominoElement<HTMLDivElement> div = DominoElement.div();
-		div.setHeight("200px");
-		addDnDHandlerFormElement(div);
-		parent.appendChild(div);
-		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create(label, new SchubecTreeElementDiv(div));
+		DominoElement<HTMLDivElement> newElement = DominoElement.div();
+		newElement.setHeight("200px");
+		x(newElement, parent);
+		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create(label, new SchubecTreeElementDiv(newElement));
 		find( parent.getDominoId(), parentTreeItem -> {
 			parentTreeItem.appendChild(newTreeItem);
 		});

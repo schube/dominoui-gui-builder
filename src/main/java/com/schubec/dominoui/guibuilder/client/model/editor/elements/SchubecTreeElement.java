@@ -108,4 +108,12 @@ public class SchubecTreeElement {
 		
 	}
 
+	public void setShowVisualHelpers(Boolean showVisualAids) {
+		if(showVisualAids) {
+			element.style().add("showVisualAids");
+		} else {
+			element.style().remove("showVisualAids");
+		}
+	}
+
 }
