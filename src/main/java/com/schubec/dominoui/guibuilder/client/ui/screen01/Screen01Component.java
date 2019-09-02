@@ -18,6 +18,7 @@ import org.dominokit.domino.ui.grid.SectionSpan;
 import org.dominokit.domino.ui.icons.Icons;
 import org.dominokit.domino.ui.notifications.Notification;
 import org.dominokit.domino.ui.style.Color;
+import org.dominokit.domino.ui.tree.ToggleTarget;
 import org.dominokit.domino.ui.tree.Tree;
 import org.dominokit.domino.ui.tree.TreeItem;
 import org.dominokit.domino.ui.utils.BaseDominoElement;
@@ -74,8 +75,10 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		super();
 		elementsTree = Tree.create("Elements", new SchubecTreeElement(root, "root")).enableFolding()
 				.setAutoCollapse(false);
+		elementsTree.setToggleTarget(ToggleTarget.ICON);
 		treehelper = new Treehelper(elementsTree);
 		factory = new Factory(treehelper);
+		factory.setShowVisualHelpers(true);
 	}
 
 	
@@ -101,6 +104,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		checkboxShowVisualHelpers = CheckBox.create("Show visual helpers");
 		checkboxShowVisualHelpers.setValue(true);
 		checkboxShowVisualHelpers.addChangeHandler(newValue -> {
+			factory.setShowVisualHelpers(newValue);
 			treehelper.iterateTree(item -> {
 				item.getValue().setShowVisualHelpers(newValue);
 				return false;
@@ -234,6 +238,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	private Tree<SchubecTreeElement> initElementsTree() {
 		rootTreeElement = new SchubecTreeElementRoot(root);
 		elementsTree.appendChild(TreeItem.create("ROOT", rootTreeElement));
+		
 		elementsTree.addItemClickListener(itemClickListener -> {
 
 			// Notification.create("Selected").show();

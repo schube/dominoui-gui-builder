@@ -49,6 +49,7 @@ import elemental2.dom.HTMLHeadingElement;
 
 public class Factory {
 	private final Treehelper treehelper;
+	private boolean showVisualHelpers;
 	
 	public Factory(Treehelper treehelper) {
 		this.treehelper = treehelper;
@@ -318,9 +319,7 @@ public class Factory {
 
 	private void addToCanvas(BaseDominoElement newElement, BaseDominoElement parent) {
 		addDnDHandlerFormElement(newElement);
-		//if(checkboxShowVisualHelpers.getValue()) {
-			
-		//}
+		
 		parent.appendChild(newElement);
 		
 	}
@@ -336,6 +335,7 @@ public class Factory {
 			evt.stopImmediatePropagation();
 			String type = ((elemental2.dom.DragEvent) evt).dataTransfer.getData("text/plain");
 			createElementAndAddToCanvas(treeItem.getValue().getElement(), type, true);
+			
 		});
 	}
 	private void addDnDHandler2(TreeItem element) {
@@ -373,5 +373,15 @@ public class Factory {
 			createElementAndAddToCanvas(element, type, true);
 		});
 	}
+
+	public boolean isShowVisualHelpers() {
+		return showVisualHelpers;
+	}
+
+	public void setShowVisualHelpers(boolean showVisualHelpers) {
+		this.showVisualHelpers = showVisualHelpers;
+	}
+
+	
 }
 

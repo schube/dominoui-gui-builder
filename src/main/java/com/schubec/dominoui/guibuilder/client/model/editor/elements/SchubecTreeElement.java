@@ -134,7 +134,7 @@ public class SchubecTreeElement {
 		
 	}
 
-	public void setShowVisualHelpers(Boolean showVisualAids) {
+	public void setShowVisualHelpers(boolean showVisualAids) {
 		if(showVisualAids) {
 			element.style().add("showVisualAids");
 		} else {
