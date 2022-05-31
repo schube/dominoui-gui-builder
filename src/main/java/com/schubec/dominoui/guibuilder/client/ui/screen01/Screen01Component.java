@@ -24,7 +24,7 @@ import org.dominokit.domino.ui.tree.TreeItem;
 import org.dominokit.domino.ui.utils.BaseDominoElement;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.dominokit.domino.ui.utils.TextNode;
-import org.jboss.gwt.elemento.core.EventType;
+import org.jboss.elemento.EventType;
 
 import com.github.nalukit.nalu.client.component.AbstractComponent;
 import com.google.gwt.core.client.GWT;
@@ -120,18 +120,18 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		
 		
 			CodeCard javaCodeCard = CodeCard.createCodeCard("Java Source Code", "", "java");
-			javaCodeCard.getCard().getBody().addShowHandler(() -> {
+			javaCodeCard.getCard().getBody().addShowListener(() -> {
 				StringBuffer javaSourcecode = new StringBuffer();
 				treehelper.iterateTree(treeItem -> {
 					javaSourcecode.append(treeItem.getValue().toSourcecode());
 					return false;
 				});
 				javaSourcecode.append(
-						"initElement(root.asElement()); //init Element for use with Nalu. Remove, if you are not using Nalu.\n");
+						"initElement(root.element()); //init Element for use with Nalu. Remove, if you are not using Nalu.\n");
 				javaCodeCard.setCode(javaSourcecode.toString());
 			});
 			CodeCard jsonCodeCard = CodeCard.createCodeCard("JSON", "", "javascript");
-			jsonCodeCard.getCard().getBody().addShowHandler(() -> {
+			jsonCodeCard.getCard().getBody().addShowListener(() -> {
 				
 				String jsonSourcecode = getCanvasAsJson();
 				jsonCodeCard.setCode(jsonSourcecode.replace("},", "},\n"));
@@ -148,7 +148,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		gridLayout.getLeftElement().appendChild(initElementsTree());
 		gridLayout.getLeftElement().appendChild(initElementChooser());
 		gridLayout.getRightElement().appendChild(initPropertiesPanel());
-		gridLayout.getContentElement().appendChild(cardCanvas.asElement());
+		gridLayout.getContentElement().appendChild(cardCanvas.element());
 		gridLayout.getContentElement().appendChild(javaCodeCard);
 		gridLayout.getContentElement().appendChild(jsonCodeCard);
 		
@@ -176,7 +176,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 		btnRefresh.addClickListener(listener -> rebuildCanvas());
 		gridLayout.getRightElement().appendChild(btnRefresh);
 
-		initElement(gridLayout.asElement());
+		initElement(gridLayout.element());
 	}
 
 
@@ -389,11 +389,11 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	private Card initPropertiesPanel() {
 		propertiesPanel = Card.create("Properties");
 
-		name = TextBox.create("Name").small().floating();
+		name = TextBox.create("Name").floating();
 		name.addChangeHandler(changeHandler -> {
 			selectedFormElement.setName(changeHandler);
 		});
-		label = TextBox.create("Label").small().floating();
+		label = TextBox.create("Label").floating();
 		label.addChangeHandler(changeHandler -> {
 			selectedFormElement.setLabel(changeHandler);
 		});
@@ -403,7 +403,7 @@ public class Screen01Component extends AbstractComponent<IScreen01Component.Cont
 	}
 
 	private void initEditorElement(Button button) {
-		button.asElement().draggable = true;
+		button.element().draggable = true;
 		button.addEventListener(EventType.dragstart, evt -> {
 			((elemental2.dom.DragEvent) evt).dataTransfer.setData("text/plain", button.getTextContent());
 		});

@@ -25,6 +25,6 @@ public class NavigationComponent extends AbstractComponent<INavigationComponent.
     Tree tree = Tree.create("Navigation");
     tree.appendChild(Screen01Item);
     tree.appendChild(Screen02Item);
-    initElement(tree.asElement());
+    initElement(tree.element());
   }
 }

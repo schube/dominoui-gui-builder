@@ -1,6 +1,5 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01;
 
-import static org.jboss.gwt.elemento.core.Elements.h;
 
 import org.dominokit.domino.ui.animations.Animation;
 import org.dominokit.domino.ui.animations.Transition;
@@ -12,14 +11,15 @@ import org.dominokit.domino.ui.forms.CheckBox;
 import org.dominokit.domino.ui.forms.TextBox;
 import org.dominokit.domino.ui.grid.Column;
 import org.dominokit.domino.ui.grid.Row;
-import org.dominokit.domino.ui.lists.SimpleListGroup;
-import org.dominokit.domino.ui.lists.SimpleListItem;
+import org.dominokit.domino.ui.labels.Label;
+import org.dominokit.domino.ui.lists.ListGroup;
 import org.dominokit.domino.ui.tabs.Tab;
 import org.dominokit.domino.ui.tabs.TabsPanel;
 import org.dominokit.domino.ui.tree.TreeItem;
 import org.dominokit.domino.ui.utils.BaseDominoElement;
 import org.dominokit.domino.ui.utils.DominoElement;
-import org.jboss.gwt.elemento.core.EventType;
+import org.jboss.elemento.Elements;
+import org.jboss.elemento.EventType;
 
 import com.google.gwt.core.client.GWT;
 import com.schubec.dominoui.guibuilder.client.model.editor.elements.SchubecTreeElement;
@@ -90,7 +90,7 @@ public class Factory {
 		return null;
 	}
 	private TreeItem createListGroup(BaseDominoElement parent, boolean createHelperObjects) {
-		SimpleListGroup newElement = SimpleListGroup.create();
+		ListGroup newElement = ListGroup.create();
 		addToCanvas(newElement, parent);
 		
 			TreeItem newTreeItem = TreeItem.create("SimpleListGroup", new SchubecTreeElementListGroup(newElement));
@@ -104,7 +104,7 @@ public class Factory {
 		
 	}
 	private TreeItem createListItem(BaseDominoElement parent, boolean createHelperObjects) {
-		SimpleListItem newElement = SimpleListItem.create("New SimpleListItem");
+		Label newElement = Label.create("New SimpleListItem");
 		addToCanvas(newElement, parent);
 		
 			TreeItem newTreeItem = TreeItem.create("SimpleListItem", new SchubecTreeElementListItem(newElement));
@@ -247,7 +247,7 @@ public class Factory {
 	}
 
 	private TreeItem createH(BaseDominoElement parent, boolean createHelperObjects) {
-		DominoElement<HTMLHeadingElement> newElement = DominoElement.of(h(1));
+		DominoElement<HTMLHeadingElement> newElement = DominoElement.of(Elements.h(1));
 		newElement.setTextContent("Title");
 		addToCanvas(newElement, parent);
 		TreeItem<SchubecTreeElement> newTreeItem = TreeItem.create("Heading",
@@ -276,7 +276,8 @@ public class Factory {
 		return newTreeItem;
 	}
 	private void initEditorElement2(TreeItem element, String type) {
-		element.asElement().draggable = true;
+		element.element().draggable = true;
+		
 		element.addEventListener(EventType.dragstart, evt -> {
 			((elemental2.dom.DragEvent) evt).dataTransfer.setData("text/plain", type);
 		});

@@ -1,23 +1,16 @@
 package com.schubec.dominoui.guibuilder.client.ui.testui;
 
-import com.github.nalukit.nalu.client.component.AbstractComponent;
-import elemental2.dom.HTMLDivElement;
-import elemental2.dom.HTMLElement;
-import java.lang.Override;
-import java.lang.String;
-
 import org.dominokit.domino.ui.badges.Badge;
-import org.dominokit.domino.ui.button.Button;
 import org.dominokit.domino.ui.cards.Card;
 import org.dominokit.domino.ui.chips.Chip;
-import org.dominokit.domino.ui.forms.CheckBox;
-import org.dominokit.domino.ui.grid.Column;
-import org.dominokit.domino.ui.grid.Row;
-import org.dominokit.domino.ui.style.Style;
 import org.dominokit.domino.ui.tabs.Tab;
 import org.dominokit.domino.ui.tabs.TabsPanel;
 import org.dominokit.domino.ui.utils.DominoElement;
-import org.jboss.gwt.elemento.core.Elements;
+
+import com.github.nalukit.nalu.client.component.AbstractComponent;
+
+import elemental2.dom.HTMLDivElement;
+import elemental2.dom.HTMLElement;
 
 
 public class TestuiComponent extends AbstractComponent<ITestuiComponent.Controller, HTMLElement> implements ITestuiComponent {
@@ -52,6 +45,6 @@ public class TestuiComponent extends AbstractComponent<ITestuiComponent.Controll
 	  tabsPanel_1000.appendChild(tab_1003);
 	  root.appendChild(tabsPanel_1000);
 	  
-    initElement(tabsPanel_1000.asElement());
+    initElement(tabsPanel_1000.element());
   }
 }

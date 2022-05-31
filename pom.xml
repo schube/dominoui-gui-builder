@@ -37,7 +37,7 @@
         <!-- nalu version -->
         <nalu.version>1.3.0</nalu.version>
         <!-- DominoUI version -->
-        <domino.version>1.0-SNAPSHOT</domino.version>
+        <domino.version>1.0.0-RC5</domino.version>
         <!-- plugin versions -->
         <plugin.version.eclipse.lifecyle>1.0.0</plugin.version.eclipse.lifecyle>
         <plugin.version.maven.compiler>3.6.1</plugin.version.maven.compiler>

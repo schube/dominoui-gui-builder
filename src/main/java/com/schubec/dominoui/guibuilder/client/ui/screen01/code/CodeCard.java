@@ -1,6 +1,5 @@
 package com.schubec.dominoui.guibuilder.client.ui.screen01.code;
 
-import static org.jboss.gwt.elemento.core.Elements.input;
 
 import org.dominokit.domino.ui.cards.Card;
 import org.dominokit.domino.ui.icons.Icons;
@@ -10,8 +9,8 @@ import org.dominokit.domino.ui.utils.DominoDom;
 import org.dominokit.domino.ui.utils.DominoElement;
 import org.dominokit.domino.ui.utils.TextNode;
 import org.gwtproject.safehtml.shared.SafeHtmlBuilder;
-import org.jboss.gwt.elemento.core.Elements;
-import org.jboss.gwt.elemento.core.InputType;
+import org.jboss.elemento.Elements;
+import org.jboss.elemento.InputType;
 
 import elemental2.dom.ClipboardEvent;
 import elemental2.dom.DomGlobal;
@@ -23,10 +22,10 @@ import jsinterop.base.Js;
 
 public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
 
-    private HTMLInputElement copyInput = input(InputType.textarea)
-            .style("visibility:hidden; width: 0px; height: 0px;").asElement();
+    private HTMLInputElement copyInput = org.jboss.elemento.Elements.input(InputType.textarea)
+            .style("visibility:hidden; width: 0px; height: 0px;").element();
     private String code;
-    private HTMLPreElement codeBlock = Elements.pre().css("prettyprint").asElement();
+    private HTMLPreElement codeBlock = Elements.pre().css("prettyprint").element();
     private Card card = Card.create("Source Code")
             .setCollapsible()
             .hide()
@@ -90,11 +89,11 @@ public class CodeCard extends BaseDominoElement<HTMLDivElement, CodeCard> {
 
     
     public static HTMLPreElement preBlock(String code) {
-        return Elements.pre().css("prettyprint").innerHtml(new SafeHtmlBuilder().appendHtmlConstant(PR.prettyPrintOne(code, null, false)).toSafeHtml()).asElement();
+        return Elements.pre().css("prettyprint").innerHtml(new SafeHtmlBuilder().appendHtmlConstant(PR.prettyPrintOne(code, null, false)).toSafeHtml()).element();
     }
 
     @Override
-    public HTMLDivElement asElement() {
-        return card.asElement();
+    public HTMLDivElement element() {
+        return card.element();
     }
 }

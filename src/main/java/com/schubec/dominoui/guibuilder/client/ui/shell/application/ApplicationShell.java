@@ -38,7 +38,7 @@ public class ApplicationShell extends AbstractShell<GuiBuilderContext> {
     layout.showFooter()
                   .fixFooter()
                   .getFooter()
-                  .asElement().style.minHeight = CSSProperties.MinHeightUnionType.of("42px");
+                  .element().style.minHeight = CSSProperties.MinHeightUnionType.of("42px");
     layout.getFooter().setId("footer");
     layout.getLeftPanel().setId("navigation");
     layout.getContentPanel().setId("content");
